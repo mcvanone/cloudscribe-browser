@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CloudScribe Browser — локальная расшифровка</title>
+  <meta name="description" content="Локальная расшифровка видео и аудио прямо в браузере">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner"><div class="logo"><span class="logo-mark">C</span><span>CloudScribe <small>Browser</small></span></div><span class="privacy"><span class="dot"></span> Распознавание на устройстве</span></div></header>
+  <main class="layout">
+    <section class="hero">
+      <div class="eyebrow">ЛОКАЛЬНАЯ ТРАНСКРИБАЦИЯ · ПРОТОТИП</div>
+      <h1>Из видео — в удобный текст</h1>
+      <p>Выберите видео или аудиозапись. Звук извлекается и распознаётся непосредственно в браузере на этом MacBook. Исходные файлы не отправляются на сервер приложения.</p>
+    </section>
+    <div class="columns">
+      <div class="left">
+        <section class="panel">
+          <h2>Новое задание</h2>
+          <label for="file-input">Видео или аудиофайл</label>
+          <div class="drop-area" id="drop-area" tabindex="0" role="button" aria-label="Выбрать файл с видео или аудио">
+            <span class="film-icon">▤</span>
+            <strong id="file-label">Перетащите файл сюда</strong>
+            <span class="file-help">или нажмите, чтобы выбрать MP4, MOV, MKV, MP3, WAV, WebM</span>
+            <span id="file-meta" class="file-meta"></span>
+          </div>
+          <input id="file-input" type="file" accept="audio/*,video/*,.mp4,.mov,.mkv,.m4a,.mp3,.wav,.webm,.ogg,.flac" hidden>
+          <div class="hint">В этой версии поддерживаются файлы с компьютера. Ссылки Google Drive, Mail.ru и Dropbox из оригинальной программы пока не перенесены.</div>
+          <div class="grid-2">
+            <div><label for="language">Язык речи</label><select id="language"><option value="ru">Русский</option><option value="en">Английский</option><option value="auto">Определить автоматически</option></select></div>
+            <div><label for="quality">Качество</label><select id="quality"><option value="fast">Быстро (Whisper Tiny)</option><option value="accurate" selected>Точнее (Whisper Small)</option></select></div>
+          </div>
+          <label for="engine">Вычисления</label>
+          <select id="engine"><option value="auto">Автоматически: WebGPU → CPU</option><option value="webgpu">WebGPU (если доступен)</option><option value="wasm">CPU / WebAssembly</option></select>
+          <div class="hint">WebGPU в браузере отличается от MLX Whisper в приложении для macOS. При первом запуске модель скачивается из Hugging Face.</div>
+          <button id="start" class="primary" disabled>Начать расшифровку</button>
+          <button id="stop" class="ghost" hidden>Остановить после текущего фрагмента</button>
+          <div id="message" role="status" class="message" aria-live="polite"></div>
+        </section>
+        <section class="panel info-panel">
+          <h3>Конфиденциальность</h3>
+          <p>Файл читается через браузерные API и не загружается на наш сервер. Страница и файлы модели загружаются с внешних ресурсов (GitHub Pages, CDN, Hugging Face). Используйте рабочие видеозаписи только при наличии соответствующего разрешения компании.</p>
+          <p>Пока нет входа по корпоративной учётной записи, постоянной истории, облачных ссылок и экспорта DOCX.</p>
+        </section>
+      </div>
+      <section class="panel results-panel">
+        <div class="results-title"><h2>Результат</h2><span class="status" id="status-tag">Нет задания</span></div>
+        <div class="details" id="details">Выберите файл и запустите распознавание.</div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-labels"><span id="stage">Ожидание</span><span id="percent">0%</span></div>
+        <div class="divider"></div>
+        <label for="transcript">Текст расшифровки — его можно редактировать</label>
+        <textarea id="transcript" placeholder="После распознавания здесь появится текст…" spellcheck="true" disabled></textarea>
+        <div class="download-row"><button id="save-txt" disabled>Скачать TXT</button><button id="save-srt" disabled>Скачать SRT</button><button id="save-json" disabled>JSON</button></div>
+        <p class="small-note">TXT сохраняет текущие правки. SRT и JSON сохраняют сегменты, полученные от Whisper.</p>
+      </section>
+    </div>
+  </main>
+  <footer>CloudScribe Browser · Экспериментальная версия. Перед использованием рабочих данных проверьте правила вашей организации.</footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
